@@ -64,27 +64,53 @@ If you get stuck, please reference the free video tutorial.
 
 ---
 
-## Deploy to rinkeby test network
+## Deploy to sepolia test network
 
-1. Run geth node
+Since the rinkeby test network has been deprecated, we use sepolia test network now. This can take dozens of hours, depending on your machine configuration and internet speed. This will cost you close to 100GB or so of hard drive space.
+
+1. Install consensus clinet: Prysum.
+
+Ethereum has been migrate to POS now, so a consensus client is needed. We use [Prysum](https://docs.prylabs.network/docs/getting-started) here.
+
+Create a folder called ethereum, and then two subfolders within it: consensus and execution. Navigate to your consensus directory and run the following commands:
 
 ```bash
-geth --rinkeby --http --http.api personal,eth,net,web3 --allow-insecure-unlock
+mkdir prysm && cd prysm
+curl https://raw.githubusercontent.com/prysmaticlabs/prysm/master/prysm.sh --output prysm.sh && chmod +x prysm.sh
 ```
 
-This can take dozens of hours, depending on your machine configuration and internet speed.  
-This will cost you close to 100GB or so of hard drive space.
-
-2. Create a new account
+2. Run geth node
 
 ```bash
-geth --rinkeby account new
+geth --sepolia --http --http.api personal,eth,net,web3 --allow-insecure-unlock
 ```
 
-3. Attach into geth console
+In the output log you can see the `Loaded JWT secret file` path, keep it and we will use it next.
+
+3. Run a beacon node using Prysm
+
+First you need to download the [Sepolia genesis state from Github](https://github.com/eth-clients/merge-testnets/blob/main/sepolia/genesis.ssz) into your consensus/prysm directory. Then use the following command to start a beacon node that connects to your local execution node:
 
 ```bash
-geth --rinkeby attach
+./prysm.sh beacon-chain --execution-endpoint=http://localhost:8551 --sepolia --suggested-fee-recipient=0x01234567722E6b0000012BFEBf6177F1D2e9758D9 --jwt-secret=YOUR_JWT_FILE_PATH --genesis-state=genesis.ssz
+```
+
+Wait for a while and you can see the sync has started. Check syncing status:
+
+```bash
+curl http://localhost:3500/eth/v1/node/syncing
+```
+
+4. Create a new account
+
+```bash
+geth --sepolia account new
+```
+
+5. Attach into geth console
+
+```bash
+geth --sepolia attach
 ```
 
 And you can do many things in geth console
@@ -96,20 +122,20 @@ eth.getBalance(eth.accounts[0]) #check account balance
 personal.unlockAccount(eth.accounts[0],null,1200)   #unlock a certain accont for 20 minutes
 ```
 
-4. Acquire eth from https://www.rinkeby.io/#faucet
+6. Acquire eth from https://sepoliafaucet.com/
 
-Here they require that you have to post a twitter or facebook, which is disgusting.
+Here they require that you have to login your google account, which is disgusting.
 
-5. Migrate
+7. Migrate
 
 ```bash
-truffle migrate --reset --compile-all --network rinkeby
+truffle migrate --reset --compile-all --network sepolia
 ```
 
-6. Verify deployment
+8. Verify deployment
 
 ```bash
-geth --rinkeby attach
+geth --sepolia attach
 ```
 
 ```bash
