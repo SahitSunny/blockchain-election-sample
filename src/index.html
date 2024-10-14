@@ -10,25 +10,64 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <style>
+      body {
+        background-color: #f8f9fa; /* Light background color */
+      }
+      .container {
+        margin-top: 50px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow effect */
+      }
+      h1 {
+        color: #343a40; /* Dark text color */
+      }
+      #loader {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 200px; /* Set height to center the loader */
+      }
+      .table {
+        margin-top: 20px;
+        background-color: #ffffff; /* White background for table */
+        border-radius: 8px; /* Rounded corners */
+        overflow: hidden; /* Prevent overflow on rounded corners */
+      }
+      .form-group label {
+        font-weight: bold; /* Make label bold */
+        color: #495057; /* Darker text for labels */
+      }
+      .btn-primary {
+        background-color: #007bff; /* Bootstrap primary color */
+        border-color: #007bff; /* Button border color */
+      }
+      .btn-primary:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+        border-color: #0056b3; /* Darker border on hover */
+      }
+      #accountAddress {
+        font-style: italic; /* Italicize the account address */
+        color: #6c757d; /* Muted color for address */
+      }
+      footer {
+        text-align: center; /* Centered footer */
+        margin-top: 30px; /* Spacing above footer */
+        color: #6c757d; /* Muted color for footer */
+      }
+    </style>
   </head>
   <body>
-    <div class="container" style="width: 650px;">
+    <div class="container p-4">
       <div class="row">
         <div class="col-lg-12">
           <h1 class="text-center">Election Results</h1>
-          <hr/>
-          <br/>
+          <hr />
           <div id="loader">
             <p class="text-center">Loading...</p>
           </div>
           <div id="content" style="display: none;">
-            <table class="table">
+            <table class="table table-striped">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -39,7 +78,7 @@
               <tbody id="candidatesResults">
               </tbody>
             </table>
-            <hr/>
+            <hr />
             <form onSubmit="App.castVote(); return false;">
               <div class="form-group">
                 <label for="candidatesSelect">Select Candidate</label>
